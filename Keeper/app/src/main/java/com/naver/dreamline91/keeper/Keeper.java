@@ -67,14 +67,14 @@ public class Keeper extends Activity {
         total = preferences.getInt("keeper_total", 0);
         int savedYear = preferences.getInt("keeper_year", 0), savedMonth = preferences.getInt("keeper_month", 0), savedDay = preferences.getInt("keeper_day", 0);
         if( savedYear == year && savedMonth == month && savedDay == day) {
-            if(preferences.getBoolean("keeper_use",false)) {
+            if(preferences.getBoolean("keeper_use",false) == true) {
                 today += cal.get(Calendar.HOUR_OF_DAY) * 3600 + cal.get(Calendar.MINUTE) * 60 + cal.get(Calendar.SECOND);
                 today -= preferences.getInt("keeper_hour", 0) * 3600 + preferences.getInt("keeper_min", 0) * 60 + preferences.getInt("keeper_sec", 0);
                 editor.putInt("keeper_today", today);
                 editor.putBoolean("keeper_use",false);
             }
         }else if(!(savedYear == 0 && savedMonth == 0 && savedDay == 0)) {
-            if(preferences.getBoolean("keeper_use",false)) {
+            if(preferences.getBoolean("keeper_use",false) == true) {
                 today += 24 * 3600 - preferences.getInt("keeper_hour", 0) * 3600 + preferences.getInt("keeper_min", 0) * 60 + preferences.getInt("keeper_sec", 0);
                 if (total != 0)
                     total = (int) (today * 0.2f + total * 0.8f);
@@ -86,16 +86,6 @@ public class Keeper extends Activity {
                 editor.putInt("keeper_today", today);
                 editor.putBoolean("keeper_use",false);
             }
-        }else{
-            editor.putInt("keeper_year",cal.get(Calendar.YEAR));
-            editor.putInt("keeper_month",cal.get(Calendar.MONTH) + 1);
-            editor.putInt("keeper_day",cal.get(Calendar.DATE));
-            editor.putInt("keeper_hour",cal.get(Calendar.HOUR_OF_DAY));
-            editor.putInt("keeper_min",cal.get(Calendar.MINUTE));
-            editor.putInt("keeper_sec",cal.get(Calendar.SECOND));
-            editor.putInt("keeper_total", total);
-            editor.putInt("keeper_today", today);
-            editor.putBoolean("keeper_use",false);
         }
         editor.commit();
 
@@ -154,12 +144,19 @@ public class Keeper extends Activity {
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
+        using();
+        finish();
     }
 
     @Override
     protected void onUserLeaveHint() {
         super.onUserLeaveHint();
+        using();
+        finish();
+    }
 
+    public void using(){
         Calendar cal = Calendar.getInstance();
         SharedPreferences preferences = getSharedPreferences("dreamline91", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
@@ -174,8 +171,6 @@ public class Keeper extends Activity {
         editor = null;
         preferences = null;
         cal = null;
-
-        finish();
     }
 }
 
