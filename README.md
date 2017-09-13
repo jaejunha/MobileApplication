@@ -3,5 +3,5 @@
 ***
 * Keeper
 	* color chooser
-	>https://github.com/martin-stone/hsv-alpha-color-picker-android
+		>https://github.com/martin-stone/hsv-alpha-color-picker-android
 * Weather
