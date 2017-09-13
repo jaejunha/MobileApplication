@@ -1,7 +1,7 @@
 #This is simple application
 ##Open source list
-***
-###Keeper
+****
+###*Keeper
 ####>color chooser
 ######>>https://github.com/martin-stone/hsv-alpha-color-picker-android
-###Weather
+###*Weather
