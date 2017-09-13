@@ -65,7 +65,9 @@ public class Keeper extends Activity {
         SharedPreferences.Editor editor = preferences.edit();
         today = preferences.getInt("keeper_today", 0);
         total = preferences.getInt("keeper_total", 0);
-        int savedYear = preferences.getInt("keeper_year", 0), savedMonth = preferences.getInt("keeper_month", 0), savedDay = preferences.getInt("keeper_day", 0);
+        int savedYear = preferences.getInt("keeper_year", 0);
+        int savedMonth = preferences.getInt("keeper_month", 0);
+        int savedDay = preferences.getInt("keeper_day", 0);
         if( savedYear == year && savedMonth == month && savedDay == day) {
             if(preferences.getBoolean("keeper_use",false) == true) {
                 today += cal.get(Calendar.HOUR_OF_DAY) * 3600 + cal.get(Calendar.MINUTE) * 60 + cal.get(Calendar.SECOND);
@@ -160,6 +162,20 @@ public class Keeper extends Activity {
         Calendar cal = Calendar.getInstance();
         SharedPreferences preferences = getSharedPreferences("dreamline91", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
+        int savedYear = preferences.getInt("keeper_year", 0);
+        int savedMonth = preferences.getInt("keeper_month", 0);
+        int savedDay = preferences.getInt("keeper_day", 0);
+        if(!(savedYear == year && savedMonth == month && savedDay == day) && !(savedYear == 0 && savedMonth == 0 && savedDay == 0)) {
+            today += 24 * 3600 - preferences.getInt("keeper_hour", 0) * 3600 + preferences.getInt("keeper_min", 0) * 60 + preferences.getInt("keeper_sec", 0);
+            if (total != 0)
+                total = (int) (today * 0.2f + total * 0.8f);
+            else
+                total = today;
+                /* 밑의 today 위치 변경하면 안됨 */
+            today = cal.get(Calendar.HOUR)*3600+cal.get(Calendar.MINUTE)*60+cal.get(Calendar.SECOND);
+            editor.putInt("keeper_total", total);
+            editor.putInt("keeper_today", today);
+        }
         editor.putInt("keeper_year",cal.get(Calendar.YEAR));
         editor.putInt("keeper_month",cal.get(Calendar.MONTH) + 1);
         editor.putInt("keeper_day",cal.get(Calendar.DATE));
