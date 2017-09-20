@@ -91,6 +91,7 @@ public class Keeper extends Activity {
                     editor.putBoolean("keeper_use",false);
                 }
             }
+            update = now;
         }
         editor.putInt("keeper_update",update);
         editor.commit();
