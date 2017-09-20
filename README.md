@@ -2,6 +2,8 @@
 **Open source list**
 ***
 * Keeper
-	* color chooser
+	* Color chooser
 		>https://github.com/martin-stone/hsv-alpha-color-picker-android
-* Weather		>https://developers.skplanetx.com/apidoc/kor/weather/information/
+* Weather		
+	* SK planet
+		>https://developers.skplanetx.com/apidoc/kor/weather/information/
