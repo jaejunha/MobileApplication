@@ -28,55 +28,26 @@
             android:textColor="@color/white"
             android:textSize="18dp" />
 
-        <TextView
-            android:id="@+id/text"
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
-            android:textColor="@color/sub"
-            android:textSize="15dp" />
+            android:src="@drawable/sk"/>
     </LinearLayout>
 
     <RelativeLayout
-        android:id="@+id/layoutFilter"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true">
+        android:layout_alignParentRight="true">
 
-        <FrameLayout
-            android:layout_width="24dp"
-            android:layout_height="32dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="10dp"
-            android:layout_centerVertical="true">
-            <ImageView
-                android:id="@+id/imageFilter"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/filter" />
-            <ImageView
-                android:id="@+id/viewFilter"
-                android:layout_marginTop="1dp"
-                android:layout_width="22dp"
-                android:layout_height="27dp"
-                android:layout_gravity="center_horizontal"
-                android:background="#ff0000"/>
-        </FrameLayout>
-    </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/layoutTool"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_toLeftOf="@id/layoutFilter">
-
-        <ImageView
-            android:id="@+id/imageNight"
+        <TextView
+            android:id="@+id/textButton"
             android:layout_width="24dp"
             android:layout_height="32dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/tool" />
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:text="▶" />
     </RelativeLayout>
 </RelativeLayout>

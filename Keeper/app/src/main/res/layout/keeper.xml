@@ -27,17 +27,17 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="360dp"
+            android:layout_height="360dp"
             android:adjustViewBounds="true"
-            android:background="@mipmap/profile70" />
+            android:background="@drawable/profile70" />
 
         <ImageView
             android:layout_width="221dp"
             android:layout_height="221dp"
             android:layout_gravity="center_horizontal|center"
             android:adjustViewBounds="true"
-            android:src="@mipmap/batteryglow" />
+            android:src="@drawable/batteryglow" />
 
         <ProgressBar
             android:id="@+id/progressBattery"
