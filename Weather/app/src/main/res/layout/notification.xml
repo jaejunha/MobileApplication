@@ -24,14 +24,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Dreamline91"
+            android:text="지역"
             android:textColor="@color/white"
             android:textSize="18dp" />
 
-        <ImageView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/sk"/>
+            android:text="세부날씨 -> 옆은 설정 버튼"/>
     </LinearLayout>
 
     <RelativeLayout

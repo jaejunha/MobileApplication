@@ -44,7 +44,7 @@ public class WeatherNotification {
         remoteView.setOnClickPendingIntent(R.id.layoutTool, pendingColor);
 */
         Notification notification = builder.build();
- //       notification.contentView = remoteView;
+        notification.contentView = remoteView;
  //       preferences = null;
         return notification;
     }

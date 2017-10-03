@@ -24,7 +24,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Dreamline91"
+            android:text="잠금 화면 동작 중"
             android:textColor="@color/white"
             android:textSize="18dp" />
 
