@@ -65,7 +65,6 @@ public class Keeper extends Activity {
         SharedPreferences preferences = getSharedPreferences("dreamline91", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         today = preferences.getInt("keeper_today", 0);
-        total = preferences.getInt("keeper_total", 0);
         update = preferences.getInt("keeper_update", 0);
         if(update == 0)
             update = now;
@@ -86,7 +85,6 @@ public class Keeper extends Activity {
                         total = today;
                 /* 밑의 today 위치 변경하면 안됨 */
                     today = cal.get(Calendar.HOUR)*3600+cal.get(Calendar.MINUTE)*60+cal.get(Calendar.SECOND);
-                    editor.putInt("keeper_total", total);
                     editor.putInt("keeper_today", today);
                     editor.putBoolean("keeper_use",false);
                 }
@@ -96,7 +94,7 @@ public class Keeper extends Activity {
         editor.putInt("keeper_update",update);
         editor.commit();
 
-        textUsage.setText("핸드폰 "+(today/60)/60+"시간 "+(today/60)%60+"분 사용 (가중치 평균 : "+(total/60)/60+"시간 "+(total/60)%60+"분)");
+        textUsage.setText("핸드폰 "+(today/60)/60+"시간 "+(today/60)%60+"분 "+(today%60)+"초 사용");
 
         editor = null;
         preferences = null;
@@ -176,7 +174,6 @@ public class Keeper extends Activity {
                 total = today;
                 /* 밑의 today 위치 변경하면 안됨 */
             today = cal.get(Calendar.HOUR)*3600+cal.get(Calendar.MINUTE)*60+cal.get(Calendar.SECOND);
-            editor.putInt("keeper_total", total);
             editor.putInt("keeper_today", today);
         }
         editor.putInt("keeper_update",update);

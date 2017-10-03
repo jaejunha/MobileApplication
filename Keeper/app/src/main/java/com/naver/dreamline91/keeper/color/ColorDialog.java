@@ -53,7 +53,12 @@ public class ColorDialog extends Dialog {
                 String color = Integer.toHexString(picker.getColor());
                 SharedPreferences preferences = context.getSharedPreferences("dreamline91", Activity.MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("keeper_color","#"+color.substring(2));
+                if(color.substring(2).length()<6){
+                    String match = color.substring(2);
+                    for(int i=0,need = 6-color.substring(2).length();i<need;match+="0",i++);
+                    editor.putString("keeper_color","#"+match);
+                }else
+                    editor.putString("keeper_color","#"+color.substring(2));
                 editor.putFloat("keeper_alpha",Integer.parseInt(color.substring(0,2),16)/255f);
                 editor.commit();
                 editor = null;
