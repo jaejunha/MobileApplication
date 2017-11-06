@@ -8,9 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.lang.reflect.Field;
 import java.util.Calendar;
 
 import dreamline91.naver.com.checker.R;
@@ -19,14 +22,17 @@ import dreamline91.naver.com.checker.R;
  * Created by dream on 2017-11-05.
  */
 
-public class Manage extends AppCompatActivity{
+public class Manage extends AppCompatActivity implements View.OnClickListener{
 
     private Context context;
 
     private Spinner[] spinnerDate;
     private SpinnerAdapter spinnerAdapter;
+    private Button buttonToday;
+    private ListView listManage;
 
     private final int SIZE_EACH_DROP = 100;
+    private final int SIZE_MAX_DROP = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +41,7 @@ public class Manage extends AppCompatActivity{
 
         makeObject();
         findID();
+        setListener();
         initSpinner();
     }
 
@@ -48,6 +55,13 @@ public class Manage extends AppCompatActivity{
         spinnerDate[0] = (Spinner) findViewById(R.id.spinnerYear);
         spinnerDate[1] = (Spinner) findViewById(R.id.spinnerMonth);
         spinnerDate[2] = (Spinner) findViewById(R.id.spinnerDay);
+
+        buttonToday = (Button)findViewById(R.id.buttonToday);
+        listManage = (ListView)findViewById(R.id.listManage);
+    }
+
+    public void setListener(){
+        buttonToday.setOnClickListener(this);
     }
 
     public void initSpinner() {
@@ -110,6 +124,31 @@ public class Manage extends AppCompatActivity{
 
             }
         });
+
+        /* reference : https://stackoverflow.com/questions/20597584/how-to-limit-the-height-of-spinner-drop-down-view-in-android */
+        try {
+            Field popup = Spinner.class.getDeclaredField("mPopup");
+            popup.setAccessible(true);
+
+            android.widget.ListPopupWindow popupWindow[];
+            popupWindow = new android.widget.ListPopupWindow[3];
+            for(int i=0;i<3;i++) {
+                popupWindow[i] = (android.widget.ListPopupWindow) popup.get(spinnerDate[i]);
+                popupWindow[i].setHeight(SIZE_MAX_DROP);
+            }
+        }
+        catch (Exception e) {
+        }
+        /* reference : https://stackoverflow.com/questions/20597584/how-to-limit-the-height-of-spinner-drop-down-view-in-android */
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.buttonToday:
+                initSpinner();
+                break;
+        }
     }
 
     public class SpinnerAdapter extends ArrayAdapter<String> {
