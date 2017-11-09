@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -25,10 +27,10 @@ import dreamline91.naver.com.checker.R;
  * Created by dream on 2017-11-05.
  */
 
-public class Manage extends AppCompatActivity implements View.OnClickListener{
+public class Manage extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener{
 
     private Context context;
-
+    private Toast toast;
     private Spinner[] spinnerDate;
     private SpinnerAdapter spinnerAdapter;
     private Button buttonToday;
@@ -73,6 +75,8 @@ public class Manage extends AppCompatActivity implements View.OnClickListener{
     public void setListener(){
         buttonToday.setOnClickListener(this);
         listManage.setAdapter(adapter);
+        for(int i=0;i<3;i++)
+            spinnerDate[i].setOnTouchListener(this);
     }
 
     public void initSpinner() {
@@ -160,6 +164,38 @@ public class Manage extends AppCompatActivity implements View.OnClickListener{
                 initSpinner();
                 break;
         }
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        String str="";
+        switch (view.getId()){
+            case R.id.spinnerYear:
+                str = "스크롤에서 해당 되는 년도를 선택해주세요";
+                if(toast == null)
+                    toast = Toast.makeText(context,str,Toast.LENGTH_SHORT);
+                else
+                    toast.setText(str);
+                toast.show();
+                break;
+            case R.id.spinnerMonth:
+                str = "스크롤에서 해당 되는 달을 선택해주세요";
+                if(toast == null)
+                    toast = Toast.makeText(context,str,Toast.LENGTH_SHORT);
+                else
+                    toast.setText(str);
+                toast.show();
+                break;
+            case R.id.spinnerDay:
+                str = "스크롤에서 해당 되는 날짜를 선택해주세요";
+                if(toast == null)
+                    toast = Toast.makeText(context,str,Toast.LENGTH_SHORT);
+                else
+                    toast.setText(str);
+                toast.show();
+                break;
+        }
+        return false;
     }
 
     public class SpinnerAdapter extends ArrayAdapter<String> {
