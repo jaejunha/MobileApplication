@@ -1,6 +1,7 @@
 package dreamline91.naver.com.checker.manage;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
@@ -12,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -34,6 +36,7 @@ public class Manage extends AppCompatActivity implements View.OnClickListener, V
     private Spinner[] spinnerDate;
     private SpinnerAdapter spinnerAdapter;
     private Button buttonToday;
+    private ImageView imageAdd, imageList, imageSetup;
     private ListView listManage;
     private ArrayList<String> list;
     private ListAdapter adapter;
@@ -68,12 +71,19 @@ public class Manage extends AppCompatActivity implements View.OnClickListener, V
         spinnerDate[1] = (Spinner) findViewById(R.id.spinnerMonth);
         spinnerDate[2] = (Spinner) findViewById(R.id.spinnerDay);
 
+        imageAdd = (ImageView) findViewById(R.id.imageAdd);
+        imageList = (ImageView) findViewById(R.id.imageList);
+        imageSetup = (ImageView) findViewById(R.id.imageSetup);
+
         buttonToday = (Button)findViewById(R.id.buttonToday);
         listManage = (ListView)findViewById(R.id.listManage);
     }
 
     public void setListener(){
         buttonToday.setOnClickListener(this);
+        imageAdd.setOnTouchListener(this);
+        imageList.setOnTouchListener(this);
+        imageSetup.setOnTouchListener(this);
         listManage.setAdapter(adapter);
         for(int i=0;i<3;i++)
             spinnerDate[i].setOnTouchListener(this);
@@ -193,6 +203,11 @@ public class Manage extends AppCompatActivity implements View.OnClickListener, V
                 else
                     toast.setText(str);
                 toast.show();
+                break;
+            case R.id.imageList:
+                startActivity(new Intent(this, MList.class));
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                finish();
                 break;
         }
         return false;

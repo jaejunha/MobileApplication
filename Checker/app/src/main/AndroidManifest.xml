@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".manage.Manage"/>
+        <activity android:name=".manage.MList"/>
     </application>
 
 </manifest>
