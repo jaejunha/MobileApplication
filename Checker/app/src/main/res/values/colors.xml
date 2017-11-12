@@ -8,4 +8,6 @@
     <color name="darkGray">#555555</color>
     <color name="gray">#DCDCDC</color>
     <color name="lightGray">#FAFAFA</color>
+    <color name="mildRed">#FF5555</color>
+    <color name="mildBlue">#5555FF</color>
 </resources>

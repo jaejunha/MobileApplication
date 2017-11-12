@@ -28,18 +28,21 @@
             android:orientation="horizontal"
             android:gravity="right|bottom">
             <ImageView
+                android:id="@+id/imageAdd"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:src="@drawable/add"/>
             <ImageView
+                android:id="@+id/imageStatistic"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:src="@drawable/statistic"/>
             <ImageView
+                android:id="@+id/imageTime"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_width="15dp"
