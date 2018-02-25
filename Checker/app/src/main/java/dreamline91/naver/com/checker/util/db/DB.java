@@ -1,4 +1,4 @@
-package dreamline91.naver.com.checker.db;
+package dreamline91.naver.com.checker.util.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
