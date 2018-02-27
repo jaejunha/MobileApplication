@@ -1,4 +1,4 @@
-package dreamline91.naver.com.checker.manage;
+package dreamline91.naver.com.checker.functionality.manage;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,13 +8,13 @@ import android.view.View;
 import android.widget.ImageView;
 
 import dreamline91.naver.com.checker.R;
-import dreamline91.naver.com.checker.manage.dialog.MListAddDialog;
+import dreamline91.naver.com.checker.functionality.manage.dialog.MListAddDialog;
 
 /**
  * Created by dream on 2017-11-12.
  */
 
-public class MList extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener {
+public class MListActivity extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener {
 
     private ImageView imageAdd;
 
@@ -56,7 +56,7 @@ public class MList extends AppCompatActivity implements View.OnClickListener, Vi
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(this, Manage.class));
+        startActivity(new Intent(this, ManageActivity.class));
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         finish();
     }

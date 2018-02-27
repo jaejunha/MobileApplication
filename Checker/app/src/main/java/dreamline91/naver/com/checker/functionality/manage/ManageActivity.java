@@ -1,4 +1,4 @@
-package dreamline91.naver.com.checker.manage;
+package dreamline91.naver.com.checker.functionality.manage;
 
 import android.content.Context;
 import android.content.Intent;
@@ -29,7 +29,7 @@ import dreamline91.naver.com.checker.R;
  * Created by dream on 2017-11-05.
  */
 
-public class Manage extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener{
+public class ManageActivity extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener{
 
     private Context context;
     private Toast toast;
@@ -205,7 +205,7 @@ public class Manage extends AppCompatActivity implements View.OnClickListener, V
                 toast.show();
                 break;
             case R.id.imageList:
-                startActivity(new Intent(this, MList.class));
+                startActivity(new Intent(this, MListActivity.class));
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 finish();
                 break;

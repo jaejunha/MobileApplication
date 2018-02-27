@@ -1,14 +1,9 @@
-package dreamline91.naver.com.checker.manage.dialog;
+package dreamline91.naver.com.checker.functionality.manage.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.Button;
-import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 
 import dreamline91.naver.com.checker.R;

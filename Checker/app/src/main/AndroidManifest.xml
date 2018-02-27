@@ -11,15 +11,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".play.Play">
+        <activity android:name=".play.PlayActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".manage.Manage"/>
-        <activity android:name=".manage.MList"/>
+        <activity android:name=".functionality.manage.ManageActivity"/>
+        <activity android:name=".functionality.manage.MListActivity"/>
+        <activity android:name=".functionality.lock.LockActivity"/>
 
         <receiver
             android:name=".util.receiver.BootReceiver"
@@ -29,6 +30,15 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
+        <receiver
+            android:name=".util.receiver.LockReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter >
+                <action android:name="android.intent.action.SCREEN_OFF"/>
+            </intent-filter>
+        </receiver>
+        <service android:name=".util.service.LockService"/>
     </application>
 
 </manifest>
