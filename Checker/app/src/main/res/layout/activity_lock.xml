@@ -1,8 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
-</android.support.constraint.ConstraintLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextClock
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/darkGray"
+            android:textSize="20pt"
+            android:gravity="center_horizontal"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="전원아이콘\n끄면 환경설정에서 다시 설정할 수 있다고 말하기"
+            android:textColor="@color/gray"
+            android:layout_gravity="right|center_vertical"/>
+    </FrameLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="75pt"
+        android:gravity="center_horizontal"
+        android:text="카카오 메시지\n~~~\n~~~"
+        android:textSize="10pt"
+        android:textColor="@color/darkGray"/>
+    <View
+        android:layout_margin="10dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center"
+        android:background="@color/gray"/>
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/darkGray"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="위는 선택하고 비번쳐야 저장되게, 이곳은 밀어서 잠금해제 구현"
+        android:textColor="@color/darkGray"/>
+</LinearLayout>
