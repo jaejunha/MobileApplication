@@ -20,8 +20,9 @@
         </activity>
         <activity android:name=".functionality.manage.ManageActivity"/>
         <activity android:name=".functionality.manage.MListActivity"/>
-        <activity android:name=".functionality.lock.LockActivity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+        <activity
+            android:name=".functionality.lock.LockActivity"
+            android:theme="@style/Theme.Transparent">
         </activity>
 
         <receiver
