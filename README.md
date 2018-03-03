@@ -1,5 +1,11 @@
 # MobileApplication
-- This is personal mobile application.
+[![Android](https://img.shields.io/badge/Java-Android-green.svg)]()  
+This is personal mobile application.  
+
+---
+
+<img src="a" alt="wait..."/>  
+
 ---
 # Member
 | Avartar | Name | Role | Activity |
@@ -9,10 +15,16 @@
  **chart from : [http://ghchart.rshah.org](http://ghchart.rshah.org)**
 
 ---
-# Refer
-- README
-	* [Git chart](http://ghchart.rshah.org)
-- Icons
-	* [Icon Generator for Corona SDK](http://icon.angrymarmot.org/)
-- Keeper
-	* [Color chooser](https://github.com/martin-stone/hsv-alpha-color-picker-android)
+# Refer  
+- Git chart  
+```
+http://ghchart.rshah.org  
+```
+- Icon Generator
+```
+http://icon.angrymarmot.org/
+```
+- Color Chooser
+```
+https://github.com/martin-stone/hsv-alpha-color-picker-android
+```
