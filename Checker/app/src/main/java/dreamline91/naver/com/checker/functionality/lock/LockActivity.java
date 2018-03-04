@@ -41,15 +41,16 @@ public class LockActivity extends Activity {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        int_startCursor = (int)motionEvent.getX();
+                        int_startCursor = (int)motionEvent.getRawX();
                         return true;
                     case MotionEvent.ACTION_MOVE:
-                        int_currentCursor = (int)motionEvent.getX();
-                        linearLayout.setX(int_currentCursor-int_startCursor);
+                        int_currentCursor = (int)motionEvent.getRawX();
+                        if(int_currentCursor-int_startCursor>=0)
+                            linearLayout.setX(int_currentCursor-int_startCursor);
                         return true;
                     case MotionEvent.ACTION_UP:
-                        int_endCursor = (int)motionEvent.getX();
-                        if(int_endCursor-int_startCursor>int_screenWidth/3)
+                        int_endCursor = (int)motionEvent.getRawX();
+                        if((int_endCursor-int_startCursor)>(int_screenWidth/3.5))
                             finish();
                         else {
                             linearLayout.setX(0);
