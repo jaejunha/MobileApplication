@@ -13,7 +13,11 @@ import dreamline91.naver.com.checker.functionality.lock.LockActivity;
 public class LockReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        if(intent.getAction().equals("android.intent.action.SCREEN_OFF"))
-            context.startActivity(new Intent(context,LockActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        if(intent.getAction().equals("android.intent.action.SCREEN_OFF")) {
+            Intent intent_lockIntent = new Intent(context, LockActivity.class);
+            intent_lockIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent_lockIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent_lockIntent);
+        }
     }
 }
