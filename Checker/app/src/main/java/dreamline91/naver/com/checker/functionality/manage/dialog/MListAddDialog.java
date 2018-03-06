@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.Button;
 
 
 import dreamline91.naver.com.checker.R;
