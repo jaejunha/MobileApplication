@@ -15,8 +15,7 @@ public class LockReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if(intent.getAction().equals("android.intent.action.SCREEN_OFF")) {
             Intent intent_lockIntent = new Intent(context, LockActivity.class);
-            intent_lockIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent_lockIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent_lockIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             context.startActivity(intent_lockIntent);
         }
     }
