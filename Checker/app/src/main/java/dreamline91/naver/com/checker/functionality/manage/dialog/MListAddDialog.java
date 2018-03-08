@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -14,6 +16,7 @@ import android.widget.Spinner;
 import java.util.ArrayList;
 
 import dreamline91.naver.com.checker.R;
+import dreamline91.naver.com.checker.util.db.DB;
 
 /**
  * Created by dream on 2017-11-12.
@@ -22,9 +25,8 @@ import dreamline91.naver.com.checker.R;
 public class MListAddDialog extends Dialog {
 
     final int WEEK = 0;
-    final int MONTH = 1;
 
-    public MListAddDialog(@NonNull Context context) {
+    public MListAddDialog(@NonNull final Context context) {
         super(context);
         setContentView(R.layout.dialog_mlistadd);
         setCanceledOnTouchOutside(false);
@@ -32,6 +34,8 @@ public class MListAddDialog extends Dialog {
         setSpinnerTime(context);
         setGroupWeek();
         setSpinnerMonth(context);
+        setButtonSave(context);
+        setButtonCancel();
     }
 
     private void setSpinnerTime(Context context) {
@@ -89,5 +93,30 @@ public class MListAddDialog extends Dialog {
         ArrayAdapter adapter_month = new ArrayAdapter(context, R.layout.spinner_text, array_month);
         adapter_month.setDropDownViewResource(R.layout.spinner_down);
         spinner_month.setAdapter(adapter_month);
+    }
+
+    public void setButtonSave(final Context context){
+        Button button_save = (Button)findViewById(R.id.button_save);
+        button_save.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                DB db = new DB(context);
+                AutoCompleteTextView edit_type = (AutoCompleteTextView)findViewById(R.id.edit_type);
+                db.insertType("type",edit_type.getText().toString());
+                db.close();
+                dismiss();
+            }
+        });
+    }
+
+    public void setButtonCancel(){
+        Button button_cancel = (Button)findViewById(R.id.button_cancel);
+        button_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
     }
 }

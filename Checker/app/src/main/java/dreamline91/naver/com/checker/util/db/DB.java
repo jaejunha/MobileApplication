@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+
 /**
  * Created by dream on 2017-11-05.
  */
@@ -35,5 +37,14 @@ public class DB extends SQLiteOpenHelper {
         super(context, DB_NAME, null, 1);
         db = getReadableDatabase();
         this.context = context;
+    }
+
+    public void insertType(String table, String name){
+        db.execSQL("CREATE TABLE IF NOT EXISTS "+table+"(name VARCHAR(20) PRIMARY KEY)");
+        try {
+            db.execSQL("INSERT INTO " + table + "('name') VALUES('" + name + "')");
+        }catch(android.database.sqlite.SQLiteConstraintException e){
+            //nothing to do
+        }
     }
 }
