@@ -1,6 +1,7 @@
 package dreamline91.naver.com.checker.util.db;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -46,5 +47,18 @@ public class DB extends SQLiteOpenHelper {
         }catch(android.database.sqlite.SQLiteConstraintException e){
             //nothing to do
         }
+    }
+
+    public String[] selectType(){
+        String[] array_types;
+        int int_counter;
+        Cursor cursor = db.rawQuery("SELECT * FROM type",null);
+        int_counter = cursor.getCount();
+        array_types = new String[int_counter];
+        for(int i=0;i<int_counter;i++){
+            cursor.moveToNext();
+            array_types[i]=cursor.getString(cursor.getColumnIndex("name"));
+        }
+        return array_types;
     }
 }

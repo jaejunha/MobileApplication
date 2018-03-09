@@ -3,7 +3,10 @@ package dreamline91.naver.com.checker.functionality.manage.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -25,17 +28,37 @@ import dreamline91.naver.com.checker.util.db.DB;
 public class MListAddDialog extends Dialog {
 
     final int WEEK = 0;
+    private Context editType;
 
     public MListAddDialog(@NonNull final Context context) {
         super(context);
         setContentView(R.layout.dialog_mlistadd);
         setCanceledOnTouchOutside(false);
 
+
+        setEditType(context);
         setSpinnerTime(context);
         setGroupWeek();
         setSpinnerMonth(context);
         setButtonSave(context);
         setButtonCancel();
+    }
+
+    public void setEditType(final Context context) {
+        final AutoCompleteTextView edit_type = (AutoCompleteTextView) findViewById(R.id.edit_type);
+        DB db = new DB(context);
+        edit_type.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, db.selectType()));
+        edit_type.setDropDownBackgroundResource(R.color.gray);
+        edit_type.post(new Runnable(){
+            @Override
+            public void run() {
+                int int_buttonSize = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, context.getResources().getDisplayMetrics());
+                ViewGroup.LayoutParams params = edit_type.getLayoutParams();
+                params.width = edit_type.getWidth()-int_buttonSize;
+                edit_type.setLayoutParams(params);
+            }
+        });
+        db.close();
     }
 
     private void setSpinnerTime(Context context) {
