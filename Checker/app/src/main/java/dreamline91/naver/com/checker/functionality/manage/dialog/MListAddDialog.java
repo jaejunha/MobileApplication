@@ -35,13 +35,23 @@ public class MListAddDialog extends Dialog {
         setContentView(R.layout.dialog_mlistadd);
         setCanceledOnTouchOutside(false);
 
-
+        setBUttonList(context);
         setEditType(context);
         setSpinnerTime(context);
         setGroupWeek();
         setSpinnerMonth(context);
         setButtonSave(context);
         setButtonCancel();
+    }
+
+    private void setBUttonList(final Context context) {
+        Button button_list = (Button)findViewById(R.id.button_list);
+        button_list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new TypeListDialog(context).show();
+            }
+        });
     }
 
     public void setEditType(final Context context) {
