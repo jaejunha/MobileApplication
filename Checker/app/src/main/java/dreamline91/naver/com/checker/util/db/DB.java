@@ -38,15 +38,24 @@ public class DB extends SQLiteOpenHelper {
         super(context, DB_NAME, null, 1);
         db = getReadableDatabase();
         this.context = context;
+        createTables();
     }
 
-    public void insertType(String table, String name){
-        db.execSQL("CREATE TABLE IF NOT EXISTS "+table+"(name VARCHAR(20) PRIMARY KEY)");
+    public void createTables(){
+        db.execSQL("CREATE TABLE IF NOT EXISTS type(no INTEGER PRIMARY KEY, name VARCHAR(20))");
+    }
+    public void insertType(String name){
+        String string_table = "type";
         try {
-            db.execSQL("INSERT INTO " + table + "('name') VALUES('" + name + "')");
+            db.execSQL("INSERT INTO " + string_table + "('name') VALUES('" + name + "')");
         }catch(android.database.sqlite.SQLiteConstraintException e){
             //nothing to do
         }
+    }
+
+    public void deleteType(String name){
+        String string_table = "type";
+        db.execSQL("DELETE FROM "+string_table+" WHERE name='"+name+"'");
     }
 
     public String[] selectType(){

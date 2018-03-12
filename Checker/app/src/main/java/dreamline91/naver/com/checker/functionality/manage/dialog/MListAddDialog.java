@@ -28,30 +28,19 @@ import dreamline91.naver.com.checker.util.db.DB;
 public class MListAddDialog extends Dialog {
 
     final int WEEK = 0;
-    private Context editType;
 
     public MListAddDialog(@NonNull final Context context) {
         super(context);
         setContentView(R.layout.dialog_mlistadd);
         setCanceledOnTouchOutside(false);
 
-        setBUttonList(context);
         setEditType(context);
+        setButtonList(context);
         setSpinnerTime(context);
         setGroupWeek();
         setSpinnerMonth(context);
         setButtonSave(context);
         setButtonCancel();
-    }
-
-    private void setBUttonList(final Context context) {
-        Button button_list = (Button)findViewById(R.id.button_list);
-        button_list.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new TypeListDialog(context).show();
-            }
-        });
     }
 
     public void setEditType(final Context context) {
@@ -69,6 +58,20 @@ public class MListAddDialog extends Dialog {
             }
         });
         db.close();
+    }
+
+    private void setButtonList(final Context context) {
+        Button button_list = (Button)findViewById(R.id.button_list);
+        button_list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DB db = new DB(context);
+                int int_typeCounter = db.selectType().length;
+                if(int_typeCounter > 0)
+                    new TypeListDialog(context).show();
+                db.close();
+            }
+        });
     }
 
     private void setSpinnerTime(Context context) {
@@ -136,7 +139,7 @@ public class MListAddDialog extends Dialog {
             public void onClick(View view) {
                 DB db = new DB(context);
                 AutoCompleteTextView edit_type = (AutoCompleteTextView)findViewById(R.id.edit_type);
-                db.insertType("type",edit_type.getText().toString());
+                db.insertType(edit_type.getText().toString());
                 db.close();
                 dismiss();
             }
