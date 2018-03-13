@@ -54,8 +54,7 @@ public class DB extends SQLiteOpenHelper {
     }
 
     public void deleteType(String name){
-        String string_table = "type";
-        db.execSQL("DELETE FROM "+string_table+" WHERE name='"+name+"'");
+        db.execSQL("DELETE FROM type WHERE name='"+name+"'");
     }
 
     public String[] selectType(){
@@ -69,5 +68,9 @@ public class DB extends SQLiteOpenHelper {
             array_types[i]=cursor.getString(cursor.getColumnIndex("name"));
         }
         return array_types;
+    }
+
+    public void updateType(String origin, String change) {
+        db.execSQL("UPDATE type SET name='"+change+"' WHERE name='"+origin+"'");
     }
 }

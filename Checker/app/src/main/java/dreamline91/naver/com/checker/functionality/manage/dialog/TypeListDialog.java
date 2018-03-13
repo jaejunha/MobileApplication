@@ -1,12 +1,19 @@
 package dreamline91.naver.com.checker.functionality.manage.dialog;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -15,16 +22,19 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import dreamline91.naver.com.checker.R;
 import dreamline91.naver.com.checker.util.db.DB;
+import dreamline91.naver.com.checker.util.dialog.TextBoxDialog;
 
 /**
  * Created by dream on 2017-11-12.
@@ -44,8 +54,11 @@ public class TypeListDialog extends Dialog {
 
         setListType(context);
         setButtonDelete(context);
+        setButtonModify(context);
         setButtonCancel(context);
+        setReceiver(context);
     }
+
     public void setListType(final Context context) {
         final ListView list_type = (ListView) findViewById(R.id.list_type);
         DB db = new DB(context);
@@ -71,6 +84,19 @@ public class TypeListDialog extends Dialog {
         });
         db.close();
     }
+
+    public void setButtonModify(final Context context) {
+        Button button_modify = (Button)findViewById(R.id.button_modify);
+        button_modify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(string_selector!=null || string_selector.equals("") == false){
+                    new TextBoxDialog(context,string_selector).show();
+                }
+            }
+        });
+    }
+
     private void setButtonDelete(final Context context){
         Button button_delete = (Button)findViewById(R.id.button_delete);
         button_delete.setOnClickListener(new View.OnClickListener() {
@@ -95,5 +121,24 @@ public class TypeListDialog extends Dialog {
                 dismiss();
             }
         });
+    }
+
+    private void setReceiver(Context context) {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("SEND_TEXT"); //동적 리시버 구현
+        BroadcastReceiver receiver = new BroadcastReceiver(){
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                int int_index = array_type.indexOf(string_selector);
+                String string_change = intent.getStringExtra("text");
+                array_type.set(int_index,string_change);
+                DB db = new DB(context);
+                db.updateType(string_selector,string_change);
+                db.close();
+                string_selector = string_change;
+                adapter_type.notifyDataSetChanged();
+            }
+         };
+        context.registerReceiver(receiver, filter);
     }
 }
