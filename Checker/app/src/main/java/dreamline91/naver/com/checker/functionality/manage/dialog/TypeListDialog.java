@@ -125,7 +125,7 @@ public class TypeListDialog extends Dialog {
 
     private void setReceiver(Context context) {
         IntentFilter filter = new IntentFilter();
-        filter.addAction("SEND_TEXT"); //동적 리시버 구현
+        filter.addAction("SEND_TEXT");
         BroadcastReceiver receiver = new BroadcastReceiver(){
             @Override
             public void onReceive(Context context, Intent intent) {

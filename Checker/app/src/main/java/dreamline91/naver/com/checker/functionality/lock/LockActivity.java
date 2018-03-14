@@ -5,10 +5,17 @@ import android.os.Bundle;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import java.util.Calendar;
 
 import dreamline91.naver.com.checker.R;
+import dreamline91.naver.com.checker.functionality.lock.dialog.RandomDialog;
 
 /**
  * Created by dream on 2018-02-27.
@@ -28,7 +35,29 @@ public class LockActivity extends Activity {
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
+        setTextCalendar();
+        setButtonRandom();
         slideEvent();
+    }
+
+    private void setTextCalendar() {
+        TextView text_calendar = (TextView)findViewById(R.id.text_calendar);
+        Calendar cal = Calendar.getInstance();
+        String string_calendar;
+        String[] string_week = {"토요일","일요일","월요일","화요일","수요일","목요일","금요일"};
+        string_calendar = String.format("%04d년 %2d월 %2d일 ",cal.get(Calendar.YEAR),cal.get(Calendar.MONTH)+1,cal.get(Calendar.DATE));
+        string_calendar += string_week[cal.get(Calendar.DAY_OF_WEEK)];
+        text_calendar.setText(string_calendar);
+    }
+
+    private void setButtonRandom() {
+        ImageButton button_random = (ImageButton)findViewById(R.id.button_random);
+        button_random.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new RandomDialog(LockActivity.this).show();
+            }
+        });
     }
 
     private void slideEvent() {
