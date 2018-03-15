@@ -1,17 +1,26 @@
 package dreamline91.naver.com.checker.functionality.lock;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.File;
 import java.util.Calendar;
 
 import dreamline91.naver.com.checker.R;
@@ -35,9 +44,24 @@ public class LockActivity extends Activity {
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
+        setBackground();
+        loadBackground();
         setTextCalendar();
         setButtonRandom();
+        setButtonBackground();
         slideEvent();
+    }
+
+    private void setBackground() {
+        LinearLayout layout_lock = (LinearLayout) findViewById(R.id.layout_lock);
+        String string_backgroundPath = loadBackground();
+        if(loadBackground().equals("") == false)
+            layout_lock.setBackground(makeBitmap(string_backgroundPath));
+    }
+
+    private String loadBackground() {
+        SharedPreferences preference = getSharedPreferences("checker", Activity.MODE_PRIVATE);
+        return preference.getString("string_backgroundPath","");
     }
 
     private void setTextCalendar() {
@@ -60,11 +84,24 @@ public class LockActivity extends Activity {
         });
     }
 
+    private void setButtonBackground() {
+        ImageButton button_background = (ImageButton)findViewById(R.id.button_background);
+        button_background.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+                intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent,1);
+            }
+        });
+    }
+
     private void slideEvent() {
         WindowManager windowManager = (WindowManager)getSystemService(WINDOW_SERVICE);
         Display display = windowManager.getDefaultDisplay();
         int_screenWidth = display.getWidth();
-        final LinearLayout linearLayout = findViewById(R.id.linearLayout);
+        final LinearLayout linearLayout = findViewById(R.id.layout_lock);
         linearLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -91,5 +128,43 @@ public class LockActivity extends Activity {
                 return false;
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            try{
+            LinearLayout layout_lock = (LinearLayout) findViewById(R.id.layout_lock);
+            String string_path = getPath(data.getData());
+            layout_lock.setBackground(makeBitmap(string_path));
+            saveBackground(string_path);
+
+            }catch (Exception e){
+                Toast.makeText(getApplicationContext(),"배경화면 바꾸기에 실패했습니다",Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private void saveBackground(String string_path) {
+        SharedPreferences preference = getSharedPreferences("checker", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preference.edit();
+        editor.putString("string_backgroundPath", string_path);
+        editor.commit();
+    }
+
+    private BitmapDrawable makeBitmap(String path){
+        Bitmap bitmap_background = BitmapFactory.decodeFile(path);
+        return new BitmapDrawable(bitmap_background);
+    }
+    private String getPath(Uri uri) {
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        if (cursor == null) {
+            return uri.getPath();
+        } else {
+            cursor.moveToFirst();
+            int int_index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            return cursor.getString(int_index);
+        }
     }
 }
