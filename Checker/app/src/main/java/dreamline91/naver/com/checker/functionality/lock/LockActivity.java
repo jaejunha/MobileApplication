@@ -12,6 +12,7 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.util.DisplayMetrics;
@@ -25,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.Calendar;
 
 import dreamline91.naver.com.checker.R;
@@ -80,9 +82,9 @@ public class LockActivity extends Activity {
         TextView text_calendar = (TextView) findViewById(R.id.text_calendar);
         Calendar cal = Calendar.getInstance();
         String string_calendar;
-        String[] string_week = {"토요일", "일요일", "월요일", "화요일", "수요일", "목요일", "금요일"};
+        String[] string_week = {"일요일", "월요일", "화요일", "수요일", "목요일", "금요일","토요일"};
         string_calendar = String.format("%04d년 %2d월 %2d일 ", cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE));
-        string_calendar += string_week[cal.get(Calendar.DAY_OF_WEEK)];
+        string_calendar += string_week[cal.get(Calendar.DAY_OF_WEEK)-1];
         text_calendar.setText(string_calendar);
     }
 
@@ -146,9 +148,12 @@ public class LockActivity extends Activity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case INTENT_ALBUM:
+                    String string_folder = Environment.getExternalStorageDirectory().getAbsolutePath()+"/checker/";
+                    new File(string_folder).mkdirs();
                     Intent intent = new Intent("com.android.camera.action.CROP");
                     intent.setDataAndType(data.getData(), "image/*");
                     intent.putExtra("crop", "true");
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(string_folder, "background.jpg")));
                     intent.putExtra("scale", "true");
                     startActivityForResult(intent, INTENT_CROP);
                     break;
