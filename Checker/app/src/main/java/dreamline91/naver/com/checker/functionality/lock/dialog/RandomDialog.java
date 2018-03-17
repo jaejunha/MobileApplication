@@ -17,7 +17,7 @@ public class RandomDialog extends Dialog {
     public RandomDialog(@NonNull Context context) {
         super(context);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.dialog_randomlist);
+        setContentView(R.layout.dialog_random);
         setCanceledOnTouchOutside(false);
 
         setButtonCancel(context);

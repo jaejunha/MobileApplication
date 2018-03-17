@@ -24,10 +24,6 @@ http://ghchart.rshah.org
 ```
 http://icon.angrymarmot.org/
 ```
-- Color Chooser
-```
-https://github.com/martin-stone/hsv-alpha-color-picker-android
-```
 - Exif Code
 ```
 https://stackoverflow.com/questions/20478765/how-to-get-the-correct-orientation-of-the-image-selected-from-the-default-image

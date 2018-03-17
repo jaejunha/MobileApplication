@@ -1,7 +1,10 @@
 package dreamline91.naver.com.checker.functionality.lock;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -10,6 +13,7 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,7 +21,6 @@ import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -48,6 +51,11 @@ public class LockActivity extends Activity {
     private int int_screenWidth;
     private int int_screenHeight;
 
+    private TextView text_calendar;
+    private TextView text_battery;
+
+    private BroadcastReceiver receiver_battery;
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +68,7 @@ public class LockActivity extends Activity {
         setBackground();
         loadBackground();
         setTextCalendar();
+        setTextBattery();
         setButtonRandom();
         setButtonBackground();
         slideEvent();
@@ -79,13 +88,32 @@ public class LockActivity extends Activity {
     }
 
     private void setTextCalendar() {
-        TextView text_calendar = (TextView) findViewById(R.id.text_calendar);
+        text_calendar = (TextView) findViewById(R.id.text_calendar);
+        refreshCalendar();
+    }
+
+    private void refreshCalendar(){
         Calendar cal = Calendar.getInstance();
         String string_calendar;
-        String[] string_week = {"일요일", "월요일", "화요일", "수요일", "목요일", "금요일","토요일"};
-        string_calendar = String.format("%04d년 %2d월 %2d일 ", cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE));
-        string_calendar += string_week[cal.get(Calendar.DAY_OF_WEEK)-1];
+        String[] string_week = {"일", "월", "화", "수", "목", "금","토"};
+        string_calendar = String.format("%04d.%2d.%2d.%s", cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE),string_week[cal.get(Calendar.DAY_OF_WEEK)-1]);
         text_calendar.setText(string_calendar);
+    }
+
+    private void setTextBattery() {
+        text_battery = (TextView)findViewById(R.id.text_battery);
+        receiver_battery = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                if (Intent.ACTION_BATTERY_CHANGED.equals(intent.getAction())) {
+                    int int_level = intent.getIntExtra("level", 0);
+                    int int_scale = intent.getIntExtra("scale", 100);
+
+                    text_battery.setText(String.format("배터리 : %2d%%",(int_level * 100 / int_scale)));
+                }
+            }
+        };
     }
 
     private void setButtonRandom() {
@@ -261,4 +289,17 @@ public class LockActivity extends Activity {
         int_screenWidth = display.widthPixels;
         int_screenHeight = display.heightPixels;
     }
+
+    protected void onResume(){
+        super.onResume();
+        refreshCalendar();
+        registerReceiver(receiver_battery, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+    }
+
+    protected void onPause(){
+        super.onPause();
+        unregisterReceiver(receiver_battery);
+    }
+
+
 }

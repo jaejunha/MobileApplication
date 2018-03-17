@@ -62,19 +62,39 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:background="@android:color/transparent"
-                android:src="@drawable/list"
+                android:src="@drawable/lock_background"
                 android:scaleType="fitXY"/>
         </LinearLayout>
     </FrameLayout>
 
     <TextView
+        android:id="@+id/text_battery"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="랜덤 문구"
         android:textColor="@color/lightGray"
-        android:textSize="10pt" />
-
+        android:textSize="10pt"/>
+    <LinearLayout
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_margin="5dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@color/lightGray"/>
+        <ScrollView
+            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="랜덤문구"
+                android:textColor="@color/lightGray"/>
+        </ScrollView>
+    </LinearLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -82,12 +102,6 @@
         android:text="잉여 시간과 아래는 통계"
         android:textColor="@color/lightGray"
         android:textSize="10pt" />
-    <View
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        android:background="@color/gray" />
 
     <TextView
         android:layout_width="match_parent"

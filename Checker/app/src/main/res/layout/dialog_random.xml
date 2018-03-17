@@ -18,7 +18,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text=" 사진 내용"
+                android:text=" 사진 링크 내용"
                 android:textColor="@color/white"
                 android:background="@color/gray"/>
         <RelativeLayout
