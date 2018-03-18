@@ -12,7 +12,9 @@ public class PlayActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startService(new Intent(this,LockService.class));
+
+        startService(new Intent(this, LockService.class));
+        startActivity(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"));
         startActivity(new Intent(this, ManageActivity.class));
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         finish();

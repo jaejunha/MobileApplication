@@ -13,27 +13,29 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import dreamline91.naver.com.checker.R;
 import dreamline91.naver.com.checker.functionality.lock.dialog.RandomDialog;
+import dreamline91.naver.com.checker.util.db.DB;
+import dreamline91.naver.com.checker.util.object.Kakao;
 
 /**
  * Created by dream on 2018-02-27.
@@ -53,6 +55,8 @@ public class LockActivity extends Activity {
 
     private TextView text_calendar;
     private TextView text_battery;
+    private TextView text_kakao;
+    private Button button_delete;
 
     private BroadcastReceiver receiver_battery;
 
@@ -69,6 +73,8 @@ public class LockActivity extends Activity {
         loadBackground();
         setTextCalendar();
         setTextBattery();
+        setTextKakao();
+        setButtonDelete();
         setButtonRandom();
         setButtonBackground();
         slideEvent();
@@ -114,6 +120,23 @@ public class LockActivity extends Activity {
                 }
             }
         };
+    }
+
+    private void setTextKakao(){
+        text_kakao = (TextView)findViewById(R.id.text_kakao);
+    }
+    private void setButtonDelete(){
+        button_delete = (Button) findViewById(R.id.button_delete);
+        button_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DB db = new DB(getApplicationContext());
+                db.deleteKakao();
+                db.close();
+                text_kakao.setText("전달된 카카오 메시지가 없습니다");
+                button_delete.setEnabled(false);
+            }
+        });
     }
 
     private void setButtonRandom() {
@@ -181,6 +204,8 @@ public class LockActivity extends Activity {
                     Intent intent = new Intent("com.android.camera.action.CROP");
                     intent.setDataAndType(data.getData(), "image/*");
                     intent.putExtra("crop", "true");
+                    intent.putExtra("aspectX", int_screenWidth);
+                    intent.putExtra("aspectY", int_screenHeight);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(string_folder, "background.jpg")));
                     intent.putExtra("scale", "true");
                     startActivityForResult(intent, INTENT_CROP);
@@ -290,10 +315,12 @@ public class LockActivity extends Activity {
         int_screenHeight = display.heightPixels;
     }
 
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         refreshCalendar();
         registerReceiver(receiver_battery, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        refreshKakao();
+
     }
 
     protected void onPause(){
@@ -302,4 +329,23 @@ public class LockActivity extends Activity {
     }
 
 
+    public void refreshKakao() {
+        DB db = new DB(getApplicationContext());
+        Calendar calendar_post = Calendar.getInstance();
+        String string_time;
+        StringBuffer string_text = new StringBuffer();
+        ArrayList<Kakao> array_kakao = db.selectKakao();
+        if(array_kakao.size()>0){
+            button_delete.setEnabled(true);
+            for(Kakao kakao : array_kakao){
+                calendar_post.setTimeInMillis(kakao.getTime());
+                string_time = String.format("%02d:%02d",calendar_post.get(Calendar.HOUR_OF_DAY),calendar_post.get(Calendar.MINUTE));
+                string_text.append(string_time+" ["+kakao.getTitle()+"] "+kakao.getContent()+"\n");
+            }
+            text_kakao.setText(string_text.toString());
+        }else{
+            button_delete.setEnabled(false);
+        }
+        db.close();
+    }
 }

@@ -76,16 +76,17 @@
         android:textSize="10pt"/>
     <LinearLayout
         android:layout_margin="10dp"
+        android:padding="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@drawable/border_white">
         <ImageView
-            android:layout_margin="5dp"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:background="@color/lightGray"/>
         <ScrollView
-            android:layout_margin="5dp"
+            android:paddingLeft="5dp"
             android:layout_width="match_parent"
             android:layout_height="100dp">
             <TextView
@@ -94,6 +95,34 @@
                 android:text="랜덤문구"
                 android:textColor="@color/lightGray"/>
         </ScrollView>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:padding="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/border_white">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <TextView
+            android:id="@+id/text_kakao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="전달된 카카오 메시지가 없습니다"
+            android:textColor="@color/lightGray"
+            android:textSize="5pt"/>
+    </ScrollView>
+        <Button
+            android:layout_marginTop="10dp"
+            android:id="@+id/button_delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="지우기"
+            android:backgroundTint="@color/gray"
+            android:textColor="@color/white"/>
     </LinearLayout>
     <TextView
         android:layout_width="match_parent"
