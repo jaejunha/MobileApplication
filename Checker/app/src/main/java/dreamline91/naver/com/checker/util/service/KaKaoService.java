@@ -30,9 +30,13 @@ public class KaKaoService extends NotificationListenerService{
             Notification notification = sbn.getNotification();
             Bundle bundle_extra = notification.extras;
 
-            DB db = new DB(getApplicationContext());
-            db.insertKakao(sbn.getPostTime(),bundle_extra.getString(Notification.EXTRA_TITLE),bundle_extra.getString(Notification.EXTRA_TEXT));
-            db.close();
+            String string_title = bundle_extra.getString(Notification.EXTRA_TITLE);
+            String string_text = bundle_extra.getString(Notification.EXTRA_TEXT);
+            if(string_text != null) {
+                DB db = new DB(getApplicationContext());
+                db.insertKakao(sbn.getPostTime(), string_title, string_text);
+                db.close();
+            }
         }
     }
 

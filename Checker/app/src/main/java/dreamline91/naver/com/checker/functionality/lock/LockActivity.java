@@ -31,6 +31,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 
 import dreamline91.naver.com.checker.R;
 import dreamline91.naver.com.checker.functionality.lock.dialog.RandomDialog;
@@ -337,6 +338,7 @@ public class LockActivity extends Activity {
         ArrayList<Kakao> array_kakao = db.selectKakao();
         if(array_kakao.size()>0){
             button_delete.setEnabled(true);
+            Collections.reverse(array_kakao);
             for(Kakao kakao : array_kakao){
                 calendar_post.setTimeInMillis(kakao.getTime());
                 string_time = String.format("%02d:%02d",calendar_post.get(Calendar.HOUR_OF_DAY),calendar_post.get(Calendar.MINUTE));
