@@ -13,28 +13,14 @@ import dreamline91.naver.com.checker.R;
  * Created by dream on 2018-03-14.
  */
 
-public class RandomDialog extends Dialog {
-    private Context context;
-
-    public RandomDialog(@NonNull Context context) {
+public class RandomAddDialog extends Dialog {
+    public RandomAddDialog(@NonNull Context context) {
         super(context);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.dialog_random);
+        setContentView(R.layout.dialog_randomadd);
         setCanceledOnTouchOutside(false);
-        this.context = context;
 
-        setButtonAdd(context);
         setButtonCancel(context);
-    }
-
-    private void setButtonAdd(final Context context) {
-        Button button_add = (Button)findViewById(R.id.button_add);
-        button_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new RandomAddDialog(context).show();
-            }
-        });
     }
 
     private void setButtonCancel(Context context) {
