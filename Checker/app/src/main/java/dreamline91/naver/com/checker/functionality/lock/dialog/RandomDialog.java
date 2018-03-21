@@ -2,6 +2,7 @@ package dreamline91.naver.com.checker.functionality.lock.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.Window;
@@ -32,7 +33,8 @@ public class RandomDialog extends Dialog {
         button_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new RandomAddDialog(context).show();
+                Intent intent = new Intent(context,RandomAddDialog.class);
+                context.startActivity(intent);
             }
         });
     }

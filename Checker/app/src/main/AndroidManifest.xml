@@ -26,6 +26,8 @@
             android:name=".functionality.lock.LockActivity"
             android:theme="@style/Theme.Transparent">
         </activity>
+        <activity android:name=".functionality.lock.dialog.RandomAddDialog"
+            android:theme="@style/Base.Theme.AppCompat.Dialog"/>
 
         <receiver
             android:name=".util.receiver.BootReceiver"

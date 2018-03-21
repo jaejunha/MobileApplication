@@ -46,17 +46,23 @@
         <TextView
             android:layout_width="50dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:text="이미지"
             android:textColor="@color/darkGray"/>
         <RelativeLayout
             android:layout_width="230dp"
             android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/edit_image"
+            <HorizontalScrollView
+                android:id="@+id/scroll_image"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/darkGray"
-                android:textColorHint="@color/gray"/>
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/edit_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/darkGray"
+                    android:enabled="false"/>
+            </HorizontalScrollView>
             <Button
                 android:id="@+id/button_image"
                 android:layout_width="50dp"

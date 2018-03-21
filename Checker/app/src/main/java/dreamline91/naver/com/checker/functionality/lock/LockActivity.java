@@ -155,6 +155,7 @@ public class LockActivity extends Activity {
         button_background.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(getApplicationContext(),"배경화면으로 사용할 이미지를 선택해주세요",Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
                 intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
