@@ -18,8 +18,10 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
+import android.widget.Toast;
 
 import dreamline91.naver.com.checker.R;
+import dreamline91.naver.com.checker.util.db.DB;
 
 /**
  * Created by dream on 2018-03-14.
@@ -27,6 +29,7 @@ import dreamline91.naver.com.checker.R;
 
 public class RandomAddDialog extends Activity {
 
+    private EditText edit_title;
     private EditText edit_image;
 
     @Override
@@ -34,10 +37,16 @@ public class RandomAddDialog extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_randomadd);
 
+        setEditTitle();
         setScrolImage();
         setEditImage();
         setButtonImage();
+        setButtonSave();
         setButtonCancel();
+    }
+
+    private void setEditTitle() {
+        edit_title = (EditText)findViewById(R.id.edit_title);
     }
 
     private void setScrolImage() {
@@ -75,6 +84,26 @@ public class RandomAddDialog extends Activity {
                 intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
                 intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent,0);
+            }
+        });
+    }
+
+    private void setButtonSave() {
+        Button button_save = (Button)findViewById(R.id.button_save);
+        button_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String string_title = edit_title.getText().toString();
+                DB db = new DB(getApplicationContext());
+                if(db.existRandom(string_title) == false) {
+                    db.insertRandom(string_title, "", "", "");
+                    db.close();
+                    finish();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(),"제목이 중복됩니다",Toast.LENGTH_LONG).show();
+                    db.close();
+                }
             }
         });
     }

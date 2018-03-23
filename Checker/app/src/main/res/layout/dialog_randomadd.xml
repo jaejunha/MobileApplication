@@ -16,9 +16,11 @@
             android:text="제목"
             android:textColor="@color/darkGray"/>
         <EditText
+            android:id="@+id/edit_title"
             android:layout_width="230dp"
             android:layout_height="wrap_content"
             android:hint="제목을 입력하세요"
+            android:maxLength="10"
             android:textColorHint="@color/gray"
             android:textColor="@color/darkGray"/>
     </LinearLayout>
@@ -36,6 +38,7 @@
             android:layout_width="230dp"
             android:layout_height="wrap_content"
             android:hint="링크를 입력하세요"
+            android:singleLine="true"
             android:textColorHint="@color/gray"
             android:textColor="@color/darkGray"/>
     </LinearLayout>

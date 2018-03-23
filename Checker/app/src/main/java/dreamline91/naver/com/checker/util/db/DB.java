@@ -46,6 +46,7 @@ public class DB extends SQLiteOpenHelper {
     public void createTables() {
         db.execSQL("CREATE TABLE IF NOT EXISTS type(no INTEGER PRIMARY KEY, name VARCHAR(20))");
         db.execSQL("CREATE TABLE IF NOT EXISTS kakao(time TEXT, title TEXT, content TEXT)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS random(title VARCHAR(20) PRIMARY KEY, content TEXT, link VARCHAR(100), image VARCHAR(100))");
     }
 
     public void insertType(String name) {
@@ -101,5 +102,22 @@ public class DB extends SQLiteOpenHelper {
 
     public void deleteKakao() {
         db.execSQL("DELETE FROM kakao");
+    }
+
+    public boolean existRandom(String title){
+        int int_counter;
+        Cursor cursor = db.rawQuery("SELECT * FROM random WHERE title='"+title+"'", null);
+        int_counter = cursor.getCount();
+        if(int_counter>0)
+            return true;
+        return false;
+    }
+
+    public void insertRandom(String title, String link, String path, String content){
+        try {
+            db.execSQL("INSERT INTO random('title', 'link', 'image', 'content') VALUES('"+title+"','"+link+"', '"+path+"', '"+content+"')");
+        } catch (android.database.sqlite.SQLiteConstraintException e) {
+            //nothing to do
+        }
     }
 }
