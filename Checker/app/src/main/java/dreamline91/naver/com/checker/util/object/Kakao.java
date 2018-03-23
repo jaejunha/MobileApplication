@@ -5,25 +5,25 @@ package dreamline91.naver.com.checker.util.object;
  */
 
 public class Kakao {
-    private long time;
-    private String title;
-    private String content;
+    private long long_time;
+    private String string_title;
+    private String string_content;
 
     public Kakao(long time, String title, String content){
-        this.time = time;
-        this.title = title;
-        this.content = content;
+        this.long_time = time;
+        this.string_title = title;
+        this.string_content = content;
     }
 
     public long getTime(){
-        return time;
+        return long_time;
     }
 
     public String getTitle() {
-        return title;
+        return string_title;
     }
 
     public String getContent() {
-        return content;
+        return string_content;
     }
 }

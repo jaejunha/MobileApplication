@@ -60,10 +60,12 @@ public class TypeListDialog extends Dialog {
     }
 
     public void setListType(final Context context) {
+        string_selector = "";
+
         final ListView list_type = (ListView) findViewById(R.id.list_type);
         DB db = new DB(context);
         array_type = new ArrayList<String>();
-        for(String type : db.selectType())
+        for (String type : db.selectType())
             array_type.add(type);
         adapter_type = new ArrayAdapter<String>(context, R.layout.list_text, array_type);
         list_type.setAdapter(adapter_type);
@@ -75,46 +77,54 @@ public class TypeListDialog extends Dialog {
                 for (int j = 0, int_count = adapterView.getCount(); j < int_count; j++) {
                     view_child = adapterView.getChildAt(j);
                     view_child.setBackgroundColor(Color.WHITE);
-                    ((TextView)view_child.findViewById(R.id.text_item)).setTextColor(context.getResources().getColor(R.color.darkGray));
+                    ((TextView) view_child.findViewById(R.id.text_item)).setTextColor(context.getResources().getColor(R.color.darkGray));
                 }
                 view.setBackgroundColor(Color.rgb(color_customGray, color_customGray, color_customGray));
-                ((TextView)view.findViewById(R.id.text_item)).setTextColor(context.getResources().getColor(R.color.white));
-                string_selector = ((TextView)view.findViewById(R.id.text_item)).getText().toString();
+                ((TextView) view.findViewById(R.id.text_item)).setTextColor(context.getResources().getColor(R.color.white));
+                string_selector = ((TextView) view.findViewById(R.id.text_item)).getText().toString();
             }
         });
         db.close();
     }
 
     public void setButtonModify(final Context context) {
-        Button button_modify = (Button)findViewById(R.id.button_modify);
+        Button button_modify = (Button) findViewById(R.id.button_modify);
         button_modify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(string_selector!=null || string_selector.equals("") == false){
-                    new TextBoxDialog(context,string_selector).show();
-                }
+                if (string_selector.equals("") == false)
+                    new TextBoxDialog(context, string_selector).show();
+                else
+                    Toast.makeText(context, "수정할 항목을 선택해주세요", Toast.LENGTH_LONG).show();
+
             }
         });
     }
 
-    private void setButtonDelete(final Context context){
-        Button button_delete = (Button)findViewById(R.id.button_delete);
+    private void setButtonDelete(final Context context) {
+        Button button_delete = (Button) findViewById(R.id.button_delete);
         button_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DB db = new DB(context);
-                db.deleteType(string_selector);
-                array_type.remove(string_selector);
-                adapter_type.notifyDataSetChanged();
-                string_selector = "";
-                db.close();
-                if(array_type.size() == 0)
-                    dismiss();
+                if (string_selector.equals("") == false) {
+                    DB db = new DB(context);
+                    db.deleteType(string_selector);
+                    array_type.remove(string_selector);
+                    adapter_type.notifyDataSetChanged();
+                    string_selector = "";
+                    db.close();
+                    if (array_type.size() == 0) {
+                        Toast.makeText(context, "모든 항목이 삭제되었습니다", Toast.LENGTH_LONG).show();
+                        dismiss();
+                    }
+                } else
+                    Toast.makeText(context, "삭제할 항목을 선택해주세요", Toast.LENGTH_LONG).show();
             }
         });
     }
+
     private void setButtonCancel(Context context) {
-        Button button_cancel = (Button)findViewById(R.id.button_cancel);
+        Button button_cancel = (Button) findViewById(R.id.button_cancel);
         button_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -126,19 +136,19 @@ public class TypeListDialog extends Dialog {
     private void setReceiver(Context context) {
         IntentFilter filter = new IntentFilter();
         filter.addAction("SEND_TEXT");
-        BroadcastReceiver receiver = new BroadcastReceiver(){
+        BroadcastReceiver receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 int int_index = array_type.indexOf(string_selector);
                 String string_change = intent.getStringExtra("text");
-                array_type.set(int_index,string_change);
+                array_type.set(int_index, string_change);
                 DB db = new DB(context);
-                db.updateType(string_selector,string_change);
+                db.updateType(string_selector, string_change);
                 db.close();
                 string_selector = string_change;
                 adapter_type.notifyDataSetChanged();
             }
-         };
+        };
         context.registerReceiver(receiver, filter);
     }
 }

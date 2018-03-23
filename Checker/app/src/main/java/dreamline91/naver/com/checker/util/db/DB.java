@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 
 import dreamline91.naver.com.checker.util.object.Kakao;
+import dreamline91.naver.com.checker.util.object.RandomText;
 
 /**
  * Created by dream on 2017-11-05.
@@ -44,7 +45,7 @@ public class DB extends SQLiteOpenHelper {
     }
 
     public void createTables() {
-        db.execSQL("CREATE TABLE IF NOT EXISTS type(no INTEGER PRIMARY KEY, name VARCHAR(20))");
+        db.execSQL("CREATE TABLE IF NOT EXISTS type(name VARCHAR(20) PRIMARY KEY)");
         db.execSQL("CREATE TABLE IF NOT EXISTS kakao(time TEXT, title TEXT, content TEXT)");
         db.execSQL("CREATE TABLE IF NOT EXISTS random(title VARCHAR(20) PRIMARY KEY, content TEXT, link VARCHAR(100), image VARCHAR(100))");
     }
@@ -119,5 +120,19 @@ public class DB extends SQLiteOpenHelper {
         } catch (android.database.sqlite.SQLiteConstraintException e) {
             //nothing to do
         }
+    }
+
+    public ArrayList<RandomText> selectRandom(){
+        ArrayList<RandomText> array_randoms = new ArrayList<>();
+        int int_counter;
+        Cursor cursor = db.rawQuery("SELECT * FROM random", null);
+        int_counter = cursor.getCount();
+        if(int_counter>0){
+            for (int i = 0; i < int_counter; i++) {
+                cursor.moveToNext();
+                array_randoms.add(new RandomText(cursor.getString(cursor.getColumnIndex("title")),cursor.getString(cursor.getColumnIndex("link")),cursor.getString(cursor.getColumnIndex("image")),cursor.getString(cursor.getColumnIndex("content"))));
+            }
+        }
+        return array_randoms;
     }
 }

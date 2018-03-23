@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 
 import java.util.ArrayList;
@@ -69,6 +70,8 @@ public class MListAddDialog extends Dialog {
                 int int_typeCounter = db.selectType().length;
                 if(int_typeCounter > 0)
                     new TypeListDialog(context).show();
+                else
+                    Toast.makeText(context,"입력된 타입이 없습니다",Toast.LENGTH_LONG).show();
                 db.close();
             }
         });
