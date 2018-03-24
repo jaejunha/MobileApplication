@@ -1,20 +1,15 @@
 package dreamline91.naver.com.checker.functionality.lock.dialog;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
@@ -30,23 +25,36 @@ import dreamline91.naver.com.checker.util.db.DB;
 public class RandomAddDialog extends Activity {
 
     private EditText edit_title;
+    private EditText edit_link;
     private EditText edit_image;
+    private EditText edit_content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_randomadd);
+        setFinishOnTouchOutside(false);
 
         setEditTitle();
+        setEditLink();
         setScrolImage();
         setEditImage();
         setButtonImage();
+        setEditContent();
         setButtonSave();
         setButtonCancel();
     }
 
     private void setEditTitle() {
         edit_title = (EditText)findViewById(R.id.edit_title);
+    }
+
+    private void setEditLink() {
+        edit_link = (EditText)findViewById(R.id.edit_link);
+    }
+
+    private void setEditContent(){
+        edit_content = (EditText)findViewById(R.id.edit_content);
     }
 
     private void setScrolImage() {
@@ -94,9 +102,13 @@ public class RandomAddDialog extends Activity {
             @Override
             public void onClick(View view) {
                 String string_title = edit_title.getText().toString();
+                String string_link = edit_link.getText().toString();
+                String string_image = edit_image.getText().toString();
+                String string_content = edit_content.getText().toString();
+
                 DB db = new DB(getApplicationContext());
                 if(db.existRandom(string_title) == false) {
-                    db.insertRandom(string_title, "", "", "");
+                    db.insertRandom(string_title, string_link, string_image, string_content);
                     db.close();
                     finish();
                 }

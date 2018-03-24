@@ -145,7 +145,7 @@ public class LockActivity extends Activity {
         button_random.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new RandomDialog(LockActivity.this).show();
+                startActivity(new Intent(getApplicationContext(), RandomDialog.class));
             }
         });
     }

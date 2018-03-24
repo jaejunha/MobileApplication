@@ -42,6 +42,7 @@ import dreamline91.naver.com.checker.util.dialog.TextBoxDialog;
 
 public class TypeListDialog extends Dialog {
 
+    private ListView list_type;
     private ArrayAdapter<String> adapter_type;
     private ArrayList<String> array_type;
     private final static int color_customGray = 66;
@@ -62,7 +63,7 @@ public class TypeListDialog extends Dialog {
     public void setListType(final Context context) {
         string_selector = "";
 
-        final ListView list_type = (ListView) findViewById(R.id.list_type);
+        list_type = (ListView) findViewById(R.id.list_type);
         DB db = new DB(context);
         array_type = new ArrayList<String>();
         for (String type : db.selectType())
@@ -112,6 +113,7 @@ public class TypeListDialog extends Dialog {
                     array_type.remove(string_selector);
                     adapter_type.notifyDataSetChanged();
                     string_selector = "";
+                    initColor(context);
                     db.close();
                     if (array_type.size() == 0) {
                         Toast.makeText(context, "모든 항목이 삭제되었습니다", Toast.LENGTH_LONG).show();
@@ -121,6 +123,15 @@ public class TypeListDialog extends Dialog {
                     Toast.makeText(context, "삭제할 항목을 선택해주세요", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void initColor(Context context){
+        View view_child;
+        for (int j = 0, int_count = list_type.getChildCount(); j < int_count; j++) {
+            view_child = list_type.getChildAt(j);
+            view_child.setBackgroundColor(Color.WHITE);
+            ((TextView)view_child.findViewById(R.id.text_item)).setTextColor(context.getResources().getColor(R.color.darkGray));
+        }
     }
 
     private void setButtonCancel(Context context) {

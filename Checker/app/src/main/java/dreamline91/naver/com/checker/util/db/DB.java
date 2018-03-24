@@ -135,4 +135,8 @@ public class DB extends SQLiteOpenHelper {
         }
         return array_randoms;
     }
+
+    public void deleteRandom(String title) {
+        db.execSQL("DELETE FROM random WHERE title='" + title + "'");
+    }
 }
