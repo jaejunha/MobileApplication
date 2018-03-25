@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -62,10 +63,14 @@ public class RandomDialog extends Activity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 View view_child;
-                for (int j = 0, int_count = adapterView.getCount(); j < int_count; j++) {
-                    view_child = adapterView.getChildAt(j);
-                    view_child.setBackgroundColor(Color.WHITE);
-                    ((TextView)view_child.findViewById(R.id.text_item)).setTextColor(getApplicationContext().getResources().getColor(R.color.darkGray));
+                try {
+                    for (int j = 0, int_count = adapterView.getCount(); j < int_count; j++) {
+                        view_child = adapterView.getChildAt(j);
+                        view_child.setBackgroundColor(Color.WHITE);
+                        ((TextView) view_child.findViewById(R.id.text_item)).setTextColor(getApplicationContext().getResources().getColor(R.color.darkGray));
+                    }
+                }catch (Exception e){
+                    //do nothing
                 }
                 view.setBackgroundColor(Color.rgb(color_customGray, color_customGray, color_customGray));
                 ((TextView)view.findViewById(R.id.text_item)).setTextColor(getApplicationContext().getResources().getColor(R.color.white));
@@ -106,7 +111,9 @@ public class RandomDialog extends Activity {
         button_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),RandomAddDialog.class));
+                Intent intent = new Intent(getApplicationContext(), RandomAddDialog.class);
+                intent.putExtra("title","");
+                startActivity(intent);
             }
         });
     }
@@ -116,8 +123,11 @@ public class RandomDialog extends Activity {
         button_modify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (string_selector.equals("") == false)
-                    startActivity(new Intent(getApplicationContext(),RandomAddDialog.class));
+                if (string_selector.equals("") == false) {
+                    Intent intent = new Intent(getApplicationContext(), RandomAddDialog.class);
+                    intent.putExtra("title",string_selector);
+                    startActivity(intent);
+                }
                 else
                     Toast.makeText(getApplicationContext(), "수정할 항목을 선택해주세요", Toast.LENGTH_LONG).show();
             }
@@ -176,5 +186,7 @@ public class RandomDialog extends Activity {
         super.onResume();
         initArray();
         adapter_random.notifyDataSetChanged();
+        initColor();
+        string_selector="";
     }
 }

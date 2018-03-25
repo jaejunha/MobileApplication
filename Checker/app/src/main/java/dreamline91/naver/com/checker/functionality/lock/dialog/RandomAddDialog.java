@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import dreamline91.naver.com.checker.R;
 import dreamline91.naver.com.checker.util.db.DB;
+import dreamline91.naver.com.checker.util.object.RandomText;
 
 /**
  * Created by dream on 2018-03-14.
@@ -24,10 +25,13 @@ import dreamline91.naver.com.checker.util.db.DB;
 
 public class RandomAddDialog extends Activity {
 
+    private boolean bool_new;
     private EditText edit_title;
     private EditText edit_link;
     private EditText edit_image;
     private EditText edit_content;
+
+    private String string_originTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +47,9 @@ public class RandomAddDialog extends Activity {
         setEditContent();
         setButtonSave();
         setButtonCancel();
+
+        if((bool_new = getIntent().getStringExtra("title").equals("")) == false)
+            editData(getIntent().getStringExtra("title"));
     }
 
     private void setEditTitle() {
@@ -107,14 +114,19 @@ public class RandomAddDialog extends Activity {
                 String string_content = edit_content.getText().toString();
 
                 DB db = new DB(getApplicationContext());
-                if(db.existRandom(string_title) == false) {
-                    db.insertRandom(string_title, string_link, string_image, string_content);
+                if(bool_new) {
+                    if (db.existRandom(string_title) == false) {
+                        db.insertRandom(string_title, string_link, string_image, string_content);
+                        db.close();
+                        finish();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "제목이 중복됩니다", Toast.LENGTH_LONG).show();
+                        db.close();
+                    }
+                }else{
+                    db.updateRandom(string_originTitle, string_title, string_link, string_image, string_content);
                     db.close();
                     finish();
-                }
-                else{
-                    Toast.makeText(getApplicationContext(),"제목이 중복됩니다",Toast.LENGTH_LONG).show();
-                    db.close();
                 }
             }
         });
@@ -146,5 +158,16 @@ public class RandomAddDialog extends Activity {
             int int_index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
             return cursor.getString(int_index);
         }
+    }
+
+    private void editData(String title){
+        DB db = new DB(this);
+        RandomText random = db.selectRandom(title);
+        string_originTitle = random.getTitle();
+        edit_title.setText(string_originTitle);
+        edit_link.setText(random.getLink());
+        edit_image.setText(random.getImage());
+        edit_content.setText(random.getContent());
+        db.close();
     }
 }

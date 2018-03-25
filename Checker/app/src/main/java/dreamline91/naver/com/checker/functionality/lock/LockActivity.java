@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
@@ -24,6 +25,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,11 +34,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Random;
 
 import dreamline91.naver.com.checker.R;
 import dreamline91.naver.com.checker.functionality.lock.dialog.RandomDialog;
 import dreamline91.naver.com.checker.util.db.DB;
 import dreamline91.naver.com.checker.util.object.Kakao;
+import dreamline91.naver.com.checker.util.object.RandomText;
 
 /**
  * Created by dream on 2018-02-27.
@@ -54,19 +58,22 @@ public class LockActivity extends Activity {
     private int int_screenWidth;
     private int int_screenHeight;
 
+    private TextView text_randomTitle;
+    private TextView text_randomLink;
+    private TextView text_randomContent;
+    private ImageView image_random;
     private TextView text_calendar;
     private TextView text_battery;
     private TextView text_kakao;
     private Button button_delete;
 
+
     private BroadcastReceiver receiver_battery;
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lock);
-
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
 
         getDeviceSize();
@@ -74,6 +81,7 @@ public class LockActivity extends Activity {
         loadBackground();
         setTextCalendar();
         setTextBattery();
+        setRandom();
         setTextKakao();
         setButtonDelete();
         setButtonRandom();
@@ -99,16 +107,16 @@ public class LockActivity extends Activity {
         refreshCalendar();
     }
 
-    private void refreshCalendar(){
+    private void refreshCalendar() {
         Calendar cal = Calendar.getInstance();
         String string_calendar;
-        String[] string_week = {"일", "월", "화", "수", "목", "금","토"};
-        string_calendar = String.format("%04d.%2d.%2d.%s", cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE),string_week[cal.get(Calendar.DAY_OF_WEEK)-1]);
+        String[] string_week = {"일", "월", "화", "수", "목", "금", "토"};
+        string_calendar = String.format("%04d.%2d.%2d.%s", cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE), string_week[cal.get(Calendar.DAY_OF_WEEK) - 1]);
         text_calendar.setText(string_calendar);
     }
 
     private void setTextBattery() {
-        text_battery = (TextView)findViewById(R.id.text_battery);
+        text_battery = (TextView) findViewById(R.id.text_battery);
         receiver_battery = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -117,16 +125,33 @@ public class LockActivity extends Activity {
                     int int_level = intent.getIntExtra("level", 0);
                     int int_scale = intent.getIntExtra("scale", 100);
 
-                    text_battery.setText(String.format("배터리 : %2d%%",(int_level * 100 / int_scale)));
+                    text_battery.setText(String.format("배터리 : %2d%%", (int_level * 100 / int_scale)));
                 }
             }
         };
     }
 
-    private void setTextKakao(){
-        text_kakao = (TextView)findViewById(R.id.text_kakao);
+
+    private void setRandom() {
+        image_random = (ImageView) findViewById(R.id.image_random);
+        text_randomTitle = (TextView) findViewById(R.id.text_randomTitle);
+        text_randomLink = (TextView) findViewById(R.id.text_randomLink);
+        text_randomContent = (TextView) findViewById(R.id.text_randomContent);
+
+        Button button_randomNext = (Button)findViewById(R.id.button_randomNext);
+        button_randomNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                refreshRandom();
+            }
+        });
     }
-    private void setButtonDelete(){
+
+    private void setTextKakao() {
+        text_kakao = (TextView) findViewById(R.id.text_kakao);
+    }
+
+    private void setButtonDelete() {
         button_delete = (Button) findViewById(R.id.button_delete);
         button_delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,7 +180,7 @@ public class LockActivity extends Activity {
         button_background.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),"배경화면으로 사용할 이미지를 선택해주세요",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "배경화면으로 사용할 이미지를 선택해주세요", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
                 intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -201,7 +226,7 @@ public class LockActivity extends Activity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case INTENT_ALBUM:
-                    String string_folder = Environment.getExternalStorageDirectory().getAbsolutePath()+"/checker/";
+                    String string_folder = Environment.getExternalStorageDirectory().getAbsolutePath() + "/checker/";
                     new File(string_folder).mkdirs();
                     Intent intent = new Intent("com.android.camera.action.CROP");
                     intent.setDataAndType(data.getData(), "image/*");
@@ -238,7 +263,7 @@ public class LockActivity extends Activity {
     private BitmapDrawable makeBitmap(String path) {
 
         Bitmap bitmap_background = BitmapFactory.decodeFile(path);
-        if(bitmap_background == null)   //called when background image was deleted
+        if (bitmap_background == null)   //called when background image was deleted
             return null;
         Bitmap bitmap_resized;
         if (bitmap_background.getWidth() > bitmap_background.getHeight()) {
@@ -322,14 +347,13 @@ public class LockActivity extends Activity {
         refreshCalendar();
         registerReceiver(receiver_battery, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         refreshKakao();
-
+        refreshRandom();
     }
 
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
         unregisterReceiver(receiver_battery);
     }
-
 
     public void refreshKakao() {
         DB db = new DB(getApplicationContext());
@@ -337,17 +361,58 @@ public class LockActivity extends Activity {
         String string_time;
         StringBuffer string_text = new StringBuffer();
         ArrayList<Kakao> array_kakao = db.selectKakao();
-        if(array_kakao.size()>0){
+        if (array_kakao.size() > 0) {
             button_delete.setEnabled(true);
             Collections.reverse(array_kakao);
-            for(Kakao kakao : array_kakao){
+            for (Kakao kakao : array_kakao) {
                 calendar_post.setTimeInMillis(kakao.getTime());
-                string_time = String.format("%02d:%02d",calendar_post.get(Calendar.HOUR_OF_DAY),calendar_post.get(Calendar.MINUTE));
-                string_text.append(string_time+" ["+kakao.getTitle()+"] "+kakao.getContent()+"\n");
+                string_time = String.format("%02d:%02d", calendar_post.get(Calendar.HOUR_OF_DAY), calendar_post.get(Calendar.MINUTE));
+                string_text.append(string_time + " [" + kakao.getTitle() + "] " + kakao.getContent() + "\n");
             }
             text_kakao.setText(string_text.toString());
-        }else{
+        } else {
             button_delete.setEnabled(false);
+        }
+        db.close();
+    }
+
+    private void refreshRandom() {
+        text_randomLink.setOnClickListener(null);
+        text_randomLink.setPaintFlags(text_randomLink.getPaintFlags());
+        image_random.setBackground(getDrawable(R.drawable.border_white));
+
+        DB db = new DB(this);
+        ArrayList<RandomText> array_random = db.selectRandom();
+        if (array_random.size() > 0) {
+            final RandomText random = array_random.get(new Random().nextInt(array_random.size()));
+            text_randomTitle.setText(random.getTitle());
+            text_randomLink.setText(random.getLink());
+            text_randomContent.setText(random.getContent());
+            if(random.getLink().equals("") == false){
+                text_randomLink.setPaintFlags(text_randomLink.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
+                text_randomLink.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        try {
+                            String string_url;
+                            if(random.getLink().toLowerCase().contains("http") == false)
+                                string_url = "http://"+random.getLink();
+                            else
+                                string_url = random.getLink();
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(string_url));
+                            startActivity(intent);
+                        }catch(Exception e){
+                            Toast.makeText(getApplicationContext(),"링크 주소가 잘못됬습니다",Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            }
+            if(random.getImage().equals("") == false)
+                image_random.setBackground(makeBitmap(random.getImage()));
+        }else{
+            text_randomTitle.setText("지정한 문구가 없습니다");
+            text_randomLink.setText("");
+            text_randomContent.setText("");
         }
         db.close();
     }

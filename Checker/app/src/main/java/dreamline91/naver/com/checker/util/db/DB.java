@@ -72,6 +72,7 @@ public class DB extends SQLiteOpenHelper {
             cursor.moveToNext();
             array_types[i] = cursor.getString(cursor.getColumnIndex("name"));
         }
+        cursor.close();
         return array_types;
     }
 
@@ -98,6 +99,7 @@ public class DB extends SQLiteOpenHelper {
                 array_kakaos.add(new Kakao(Long.parseLong(cursor.getString(0)),cursor.getString(1),cursor.getString(2)));
             }
         }
+        cursor.close();
         return array_kakaos;
     }
 
@@ -109,6 +111,7 @@ public class DB extends SQLiteOpenHelper {
         int int_counter;
         Cursor cursor = db.rawQuery("SELECT * FROM random WHERE title='"+title+"'", null);
         int_counter = cursor.getCount();
+        cursor.close();
         if(int_counter>0)
             return true;
         return false;
@@ -133,10 +136,23 @@ public class DB extends SQLiteOpenHelper {
                 array_randoms.add(new RandomText(cursor.getString(cursor.getColumnIndex("title")),cursor.getString(cursor.getColumnIndex("link")),cursor.getString(cursor.getColumnIndex("image")),cursor.getString(cursor.getColumnIndex("content"))));
             }
         }
+        cursor.close();
         return array_randoms;
+    }
+
+    public RandomText selectRandom(String title){
+        RandomText random;
+        Cursor cursor = db.rawQuery("SELECT * FROM random WHERE title='"+title+"'", null);
+        cursor.moveToNext();
+        random = new RandomText(cursor.getString(cursor.getColumnIndex("title")),cursor.getString(cursor.getColumnIndex("link")),cursor.getString(cursor.getColumnIndex("image")),cursor.getString(cursor.getColumnIndex("content")));
+        return random;
     }
 
     public void deleteRandom(String title) {
         db.execSQL("DELETE FROM random WHERE title='" + title + "'");
+    }
+
+    public void updateRandom(String origin, String title, String link, String image, String content) {
+        db.execSQL("UPDATE random SET title='" + title + "' , link='" + link + "', image='" + image + "', content='" + content + "' WHERE title='" + origin + "'");
     }
 }

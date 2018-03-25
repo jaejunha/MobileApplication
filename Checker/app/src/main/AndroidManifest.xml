@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.REORDER_TASKS"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -13,8 +15,7 @@
         android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".play.PlayActivity"
-            android:excludeFromRecents="true">
+        <activity android:name=".play.PlayActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,8 +26,12 @@
         <activity android:name=".functionality.manage.MListActivity"/>
         <activity
             android:name=".functionality.lock.LockActivity"
+            android:label="Locker"
             android:theme="@style/Theme.Transparent"
-            android:excludeFromRecents="true">
+            android:launchMode="singleTask"
+            android:clearTaskOnLaunch="true"
+            android:excludeFromRecents="true"
+            android:taskAffinity="">
         </activity>
         <activity android:name=".functionality.lock.dialog.RandomDialog"
             android:theme="@style/Base.Theme.AppCompat.Dialog"/>
