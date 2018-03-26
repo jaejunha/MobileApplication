@@ -48,6 +48,8 @@ public class TypeListDialog extends Dialog {
     private final static int color_customGray = 66;
     private String string_selector;
 
+    private BroadcastReceiver receiver;
+
     public TypeListDialog(@NonNull final Context context) {
         super(context);
         setContentView(R.layout.dialog_typelist);
@@ -58,6 +60,7 @@ public class TypeListDialog extends Dialog {
         setButtonModify(context);
         setButtonCancel(context);
         setReceiver(context);
+        setDismiss(context);
     }
 
     public void setListType(final Context context) {
@@ -115,6 +118,7 @@ public class TypeListDialog extends Dialog {
                     string_selector = "";
                     initColor(context);
                     db.close();
+                    context.sendBroadcast(new Intent("SEND_TYPE"));
                     if (array_type.size() == 0) {
                         Toast.makeText(context, "모든 항목이 삭제되었습니다", Toast.LENGTH_LONG).show();
                         dismiss();
@@ -147,7 +151,7 @@ public class TypeListDialog extends Dialog {
     private void setReceiver(Context context) {
         IntentFilter filter = new IntentFilter();
         filter.addAction("SEND_TEXT");
-        BroadcastReceiver receiver = new BroadcastReceiver() {
+        receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 int int_index = array_type.indexOf(string_selector);
@@ -158,8 +162,18 @@ public class TypeListDialog extends Dialog {
                 db.close();
                 string_selector = string_change;
                 adapter_type.notifyDataSetChanged();
+                context.sendBroadcast(new Intent("SEND_TYPE"));
             }
         };
         context.registerReceiver(receiver, filter);
+    }
+
+    private void setDismiss(final Context context) {
+        setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                context.unregisterReceiver(receiver);
+            }
+        });
     }
 }

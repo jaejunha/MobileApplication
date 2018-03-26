@@ -1,7 +1,11 @@
 package dreamline91.naver.com.checker.functionality.manage.dialog;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.util.TypedValue;
@@ -29,6 +33,7 @@ import dreamline91.naver.com.checker.util.db.DB;
 public class MListAddDialog extends Dialog {
 
     final int WEEK = 0;
+    private BroadcastReceiver receiver;
 
     public MListAddDialog(@NonNull final Context context) {
         super(context);
@@ -42,6 +47,8 @@ public class MListAddDialog extends Dialog {
         setSpinnerMonth(context);
         setButtonSave(context);
         setButtonCancel();
+        setReceiver(context);
+        setDismiss(context);
     }
 
     public void setEditType(final Context context) {
@@ -155,6 +162,27 @@ public class MListAddDialog extends Dialog {
             @Override
             public void onClick(View view) {
                 dismiss();
+            }
+        });
+    }
+
+    private void setReceiver(final Context ct) {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("SEND_TYPE");
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                setEditType(ct);
+            }
+        };
+        ct.registerReceiver(receiver, filter);
+    }
+
+    private void setDismiss(final Context context) {
+        setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                context.unregisterReceiver(receiver);
             }
         });
     }

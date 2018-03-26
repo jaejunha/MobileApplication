@@ -33,8 +33,6 @@
             android:excludeFromRecents="true"
             android:taskAffinity="">
         </activity>
-        <activity android:name=".functionality.lock.dialog.RandomDialog"
-            android:theme="@style/Base.Theme.AppCompat.Dialog"/>
         <activity android:name=".functionality.lock.dialog.RandomAddDialog"
             android:theme="@style/Base.Theme.AppCompat.Dialog"/>
 

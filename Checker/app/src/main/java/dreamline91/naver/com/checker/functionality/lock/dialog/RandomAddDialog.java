@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -118,6 +119,7 @@ public class RandomAddDialog extends Activity {
                     if (db.existRandom(string_title) == false) {
                         db.insertRandom(string_title, string_link, string_image, string_content);
                         db.close();
+                        sendBroadcast(new Intent("SEND_RANDOM"));
                         finish();
                     } else {
                         Toast.makeText(getApplicationContext(), "제목이 중복됩니다", Toast.LENGTH_LONG).show();
@@ -126,6 +128,7 @@ public class RandomAddDialog extends Activity {
                 }else{
                     db.updateRandom(string_originTitle, string_title, string_link, string_image, string_content);
                     db.close();
+                    sendBroadcast(new Intent("SEND_RANDOM"));
                     finish();
                 }
             }
