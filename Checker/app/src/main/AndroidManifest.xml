@@ -22,8 +22,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".functionality.manage.ManageActivity"/>
-        <activity android:name=".functionality.manage.MListActivity"/>
+        <activity
+            android:name=".functionality.manage.ManageActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".functionality.manage.MListActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".functionality.lock.LockActivity"
             android:label="Locker"
@@ -31,10 +35,12 @@
             android:launchMode="singleTask"
             android:clearTaskOnLaunch="true"
             android:excludeFromRecents="true"
-            android:taskAffinity="">
+            android:taskAffinity=""
+            android:screenOrientation="portrait">
         </activity>
         <activity android:name=".functionality.lock.dialog.RandomAddDialog"
-            android:theme="@style/Base.Theme.AppCompat.Dialog"/>
+            android:theme="@style/Base.Theme.AppCompat.Dialog"
+            android:screenOrientation="portrait"/>
 
         <receiver
             android:name=".util.receiver.BootReceiver"
